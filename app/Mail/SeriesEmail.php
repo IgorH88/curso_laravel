@@ -25,7 +25,7 @@ class SeriesEmail extends Mailable
         public int $qtdEpisodios,
     )
     {
-        //
+        $this->subject("A série {{$serieName}} foi criada com successo");
     }
 
     /**
