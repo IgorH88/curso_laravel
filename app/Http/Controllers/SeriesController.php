@@ -36,16 +36,15 @@ class SeriesController extends Controller
     {
 
         $users = User::all();
-        $serie= $this->repository->add($request);
+        $serie= $this->repository->add($request);        
         
-        $email = new SeriesEmail (
-            $serie->nome,
-            $serie->id,
-            $request->seasonsQty,
-            $request->episodesPerSeason,
-        );
-
         foreach($users as $user){
+            $email = new SeriesEmail (
+                $serie->nome,
+                $serie->id,
+                $request->seasonsQty,
+                $request->episodesPerSeason,
+            );
             Mail::to($user)->send($email);
         }
         return to_route('series.index')
