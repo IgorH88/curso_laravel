@@ -36,6 +36,3 @@ Route::post('/login', [LoginController::class, 'store'])->name('sing');
 Route::get('/logout', [LoginController::class, 'destroy'])->name('logout');
 Route::get('/register', [UsersController::class, 'create'])->name('user.create');
 Route::post('/register', [UsersController::class, 'store'])->name('user.store');
-Route::get('email', function () {
-    return new SeriesEmail('Teste', 1,5,10);
-});
