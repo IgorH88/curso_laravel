@@ -1,14 +1,5 @@
 <?php
 
-use App\Http\Controllers\SeasonsController;
-use App\Http\Controllers\SeriesController;
-use App\Http\Controllers\EpisodesController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\UsersController;
-use App\Http\Middleware\Autenticador;
-use App\Mail\SeriesEmail;
-use App\Models\Episode;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,18 +12,22 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::resource('/series', SeriesController::class)->except(['show']);
 
-
-Route::middleware('autenticador')->group(function (){
-    Route::get('/', function () {return redirect('/series');})->middleware(Autenticador::class);
-    Route::get('/series/{series}/seasons', [SeasonsController::class, 'index'])->name('seasons.index');//->middleware('autenticador');
-    Route::get('/season/{season}/episodes', [EpisodesController::class, 'index'])->name('episodes.index');
-    Route::post('/season/{season}/episodes', [EpisodesController::class, 'update'])->name('episodes.update');
+Route::get('/', function () {
+    return view('welcome');
 });
 
-Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/login', [LoginController::class, 'store'])->name('sing');
-Route::get('/logout', [LoginController::class, 'destroy'])->name('logout');
-Route::get('/register', [UsersController::class, 'create'])->name('user.create');
-Route::post('/register', [UsersController::class, 'store'])->name('user.store');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+Route::get('/email', function () {
+    return new \App\Mail\SeriesCreated(
+        'Série de teste',
+        19,
+        5,
+        10,
+    );
+});
+
+require __DIR__ . '/auth.php';
